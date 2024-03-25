@@ -5,7 +5,7 @@ We will deploy two web apps, one containing the `images` folder and second one c
 ## Commands to deploy sample web applications
 Replace the values of variables below with resource names of the resources created by terraform. While replacing the values for `FIRST_WEB_APP` make sure to select the value of `app service` provided in `backend_pool_images` in `app gateway`. While replacing the values for `SECOND_WEB_APP` make sure to select the value of `app service` provided in `backend_pool_videos` in `app gateway`.
 
-Switch to `tf-azurerm-wrapper_module-application_gateway/examples/with_web_app/deployment` directory to run commands below.
+Switch to `tf-azurerm-module_collection-application_gateway/examples/with_web_app/deployment` directory to run commands below.
 
 RESOURCE_GROUP=launch-network-2351624540
 FIRST_WEB_APP=launch-network-2794677915
