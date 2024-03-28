@@ -12,7 +12,6 @@
 
 locals {
   resource_group_name = module.resource_names["resource_group"].minimal_random_suffix
-  app_gateway_name    = module.resource_names["app_gateway"].minimal_random_suffix
   vnet_name           = module.resource_names["vnet"].minimal_random_suffix
   app_gtwy_subnet_id  = lookup(module.network.vnet_subnets_name_id, "app-gtw-subnet", null)
   web_app_name_images = module.resource_names["web_app_images"].minimal_random_suffix
