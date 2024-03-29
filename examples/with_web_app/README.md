@@ -85,4 +85,5 @@ In this example, we deploy an application gateway with a backend pool that conta
 | <a name="output_appgw_url_path_map_default_backend_http_settings_ids"></a> [appgw\_url\_path\_map\_default\_backend\_http\_settings\_ids](#output\_appgw\_url\_path\_map\_default\_backend\_http\_settings\_ids) | List of default backend HTTP settings Ids attached to URL path maps. |
 | <a name="output_appgw_url_path_map_default_redirect_configuration_ids"></a> [appgw\_url\_path\_map\_default\_redirect\_configuration\_ids](#output\_appgw\_url\_path\_map\_default\_redirect\_configuration\_ids) | List of default redirect configuration Ids attached to URL path maps. |
 | <a name="output_appgw_url_path_map_ids"></a> [appgw\_url\_path\_map\_ids](#output\_appgw\_url\_path\_map\_ids) | List of URL path map Ids. |
+| <a name="output_resource_group_name"></a> [resource\_group\_name](#output\_resource\_group\_name) | Resource group name |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

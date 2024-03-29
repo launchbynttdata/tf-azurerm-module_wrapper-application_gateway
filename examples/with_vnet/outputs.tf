@@ -170,3 +170,8 @@ output "appgw_url_path_map_ids" {
   value       = module.app-gateway.appgw_url_path_map_ids
   description = "List of URL path map Ids."
 }
+
+output "resource_group_name" {
+  value       = module.resource_group.name
+  description = "Resource group name"
+}
