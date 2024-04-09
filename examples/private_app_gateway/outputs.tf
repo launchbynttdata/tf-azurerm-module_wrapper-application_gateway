@@ -175,3 +175,9 @@ output "resource_group_name" {
   value       = module.resource_group.name
   description = "Resource group name"
 }
+
+output "jumpbox_password" {
+  value       = local.jumpbox_password
+  description = "Jumpbox password"
+  sensitive   = true
+}
