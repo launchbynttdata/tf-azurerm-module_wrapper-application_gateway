@@ -10,7 +10,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-module "app-gateway" {
+module "app_gateway" {
   source = "../.."
 
   app_gateways = local.app_gateways
@@ -22,7 +22,7 @@ module "resource_group" {
   source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-resource_group.git?ref=1.0.0"
 
   name     = local.resource_group_name
-  location = var.region
+  location = var.location
   tags = {
     resource_name = local.resource_group_name
   }
@@ -34,7 +34,7 @@ module "resource_names" {
 
   for_each = var.resource_names_map
 
-  region                  = join("", split("-", var.region))
+  region                  = join("", split("-", var.location))
   class_env               = var.environment
   cloud_resource_type     = each.value.name
   instance_env            = var.environment_number
@@ -64,7 +64,7 @@ module "network" {
 resource "azurerm_service_plan" "app_service_plan" {
   name                = local.app_service_name
   resource_group_name = module.resource_group.name
-  location            = var.region
+  location            = var.location
   sku_name            = "F1"
   os_type             = "Windows"
   depends_on          = [module.resource_group]
@@ -73,7 +73,7 @@ resource "azurerm_service_plan" "app_service_plan" {
 resource "azurerm_windows_web_app" "windows_web_app_images" {
   name                = local.web_app_name_images
   resource_group_name = module.resource_group.name
-  location            = var.region
+  location            = var.location
   service_plan_id     = azurerm_service_plan.app_service_plan.id
 
   site_config {
@@ -91,7 +91,7 @@ resource "azurerm_windows_web_app" "windows_web_app_images" {
 resource "azurerm_windows_web_app" "windows_web_app_videos" {
   name                = local.web_app_name_videos
   resource_group_name = module.resource_group.name
-  location            = var.region
+  location            = var.location
   service_plan_id     = azurerm_service_plan.app_service_plan.id
 
   site_config {

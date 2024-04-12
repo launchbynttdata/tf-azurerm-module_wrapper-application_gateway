@@ -129,9 +129,29 @@ variable "app_gateways" {
       name = string
       port = number
     }))
-    custom_ip_name                        = optional(string, "")
-    custom_ip_label                       = optional(string, "")
-    custom_frontend_ip_configuration_name = optional(string, "")
+    subnet_cidr                                = string,
+    custom_ip_name                             = optional(string, "")
+    custom_ip_label                            = optional(string, "")
+    custom_frontend_ip_configuration_name      = optional(string, "")
+    appgw_private                              = optional(bool, false)
+    appgw_private_ip                           = optional(string, "")
+    custom_frontend_priv_ip_configuration_name = optional(string, "")
+    ip_allocation_method                       = optional(string, "Static")
+    ip_sku                                     = optional(string, "Standard")
+    ip_tags                                    = optional(map(string), {})
+    ip_ddos_protection_mode                    = optional(string, "Disabled")
+    ip_ddos_protection_plan_id                 = optional(string, null)
+    create_nsg                                 = optional(bool, false)
+    create_nsg_healthprobe_rule                = optional(bool, false)
+    create_nsg_https_rule                      = optional(bool, false)
+    custom_nsg_name                            = optional(string, "")
+    custom_nsr_healthcheck_name                = optional(string, "")
+    custom_nsr_https_name                      = optional(string, "")
+    custom_subnet_name                         = optional(string, "")
+    enable_http2                               = optional(bool, false)
+    firewall_policy_id                         = optional(string, null)
+    force_firewall_policy_association          = optional(bool, false)
+    nsr_https_source_address_prefix            = optional(string, "")
   }))
 }
 
@@ -168,6 +188,10 @@ variable "resource_names_map" {
       name       = "appsvc"
       max_length = 80
     }
+    network_security_group = {
+      name       = "nsg"
+      max_length = 80
+    }
   }
 }
 
@@ -180,12 +204,6 @@ variable "environment_number" {
 variable "resource_number" {
   description = "The resource count for the respective resource. Defaults to 000. Increments in value of 1"
   default     = "000"
-  type        = string
-}
-
-variable "region" {
-  description = "Azure Region in which the infra needs to be provisioned"
-  default     = "eastus2"
   type        = string
 }
 
@@ -245,4 +263,199 @@ variable "environment" {
 variable "location" {
   type        = string
   description = "(Required) Azure location."
+}
+
+//variables for vm module
+variable "vm_name" {
+  description = "Name of the virtual machine"
+  type        = string
+  default     = "example-machine"
+}
+
+variable "jumpbox_name" {
+  description = "Name of the virtual machine"
+  type        = string
+  default     = "jumpbox-machine"
+}
+variable "vm_nic_name" {
+  description = "Name of the virtual machine"
+  type        = string
+  default     = "example-nic"
+}
+
+variable "jumpbox_nic_name" {
+  description = "Name of the virtual machine"
+  type        = string
+  default     = "jumpbox-example-nic"
+}
+
+variable "vm_priority" {
+  description = "Priority of the virtual machine"
+  type        = string
+  default     = "Regular"
+}
+
+variable "eviction_policy" {
+  description = "Eviction policy of the virtual machine"
+  type        = string
+  default     = "Deallocate"
+}
+
+variable "vm_size" {
+  description = "Size of the virtual machine"
+  type        = string
+  default     = "Standard_F2"
+}
+
+variable "vm_username" {
+  description = "value of the username"
+  type        = string
+  default     = "adminuser"
+}
+
+variable "custom_data" {
+  description = "Custom script path that allows to run commands on the virtual machine at the time of provisioning."
+  type        = string
+  default     = "scripts/init.sh"
+}
+
+variable "admin_ssh_key" {
+  description = "SSH key for the virtual machine"
+  type = object({
+    username        = string
+    public_key_path = string
+  })
+  default = {
+    username        = "adminuser"
+    public_key_path = "~/.ssh/id_rsa.pub"
+  }
+}
+
+variable "os_disk" {
+  description = "OS disk configuration"
+  type = object({
+    caching              = string
+    storage_account_type = string
+  })
+  default = {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+}
+
+variable "source_image_reference" {
+  description = "Source image reference"
+  type = object({
+    publisher = string
+    offer     = string
+    sku       = string
+    version   = string
+  })
+  default = {
+    publisher = "Canonical"
+    offer     = "0001-com-ubuntu-server-jammy"
+    sku       = "22_04-lts"
+    version   = "latest"
+  }
+}
+
+variable "jumpbox_source_image_reference" {
+  description = "Source image reference"
+  type = object({
+    publisher = string
+    offer     = string
+    sku       = string
+    version   = string
+  })
+  default = {
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = "2016-Datacenter"
+    version   = "latest"
+  }
+}
+
+variable "vm_nic_ip_configuration" {
+  description = "Attributes of the network interface to be created."
+  type = object({
+    name                          = string
+    private_ip_address_allocation = string
+  })
+  default = {
+    name                          = "internal"
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+variable "jumpbox_vm_nic_ip_configuration" {
+  description = "Attributes of the network interface to be created."
+  type = object({
+    name                          = string
+    private_ip_address_allocation = string
+    subnet_id                     = optional(string)
+  })
+  default = {
+    name                          = "jumpbox-internal"
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+
+//variables for security group module
+variable "security_rules" {
+  type = list(object({
+    name                                       = string
+    protocol                                   = string
+    access                                     = string
+    priority                                   = number
+    direction                                  = string
+    description                                = optional(string)
+    source_port_range                          = optional(string)
+    source_port_ranges                         = optional(list(string))
+    destination_port_range                     = optional(string)
+    destination_port_ranges                    = optional(list(string))
+    source_address_prefix                      = optional(string)
+    source_address_prefixes                    = optional(list(string))
+    source_application_security_group_ids      = optional(list(string))
+    destination_address_prefix                 = optional(string)
+    destination_address_prefixes               = optional(list(string))
+    destination_application_security_group_ids = optional(list(string))
+  }))
+  description = "(Optional) A list of security rules associated with the network security group."
+  default     = null
+}
+
+//variables public ip
+variable "public_ip_name" {
+  description = "Name of the public ip"
+  type        = string
+  default     = "example-public-ip"
+}
+
+variable "public_ip_allocation" {
+  description = "Ip allocation method"
+  type        = string
+  default     = "Dynamic"
+}
+
+variable "public_ip_idle_timeout_in_minutes" {
+  description = "Idle timeout in minutes for the public ip"
+  type        = number
+  default     = 30
+}
+
+// Admin password generation
+variable "length" {
+  type    = number
+  default = 24
+}
+
+variable "number" {
+  type    = bool
+  default = true
+}
+
+variable "special" {
+  type    = bool
+  default = false
 }

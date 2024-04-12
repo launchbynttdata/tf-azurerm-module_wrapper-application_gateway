@@ -1,6 +1,6 @@
 
 app_gateways = {
-  "first_gateway" = {
+  "web_app_gateway" = {
     appgw_backend_http_settings = [{
       name                  = "images_http_settings"
       port                  = 80
@@ -18,34 +18,26 @@ app_gateways = {
         probe_name            = "videos-health-probe"
     }]
     appgw_http_listeners = [{
-      name               = "http_listener"
+      name               = "web_app_http_listener"
       frontend_port_name = "frontend_port"
       protocol           = "Http"
     }]
     client_name           = "launch"
     environment           = "demo"
-    location              = "East Us 2"
-    location_short        = "eastus2"
     logs_destinations_ids = []
     stack                 = "appgateway"
     virtual_network_name  = "vnet"
     subnet_cidr           = "10.0.0.0/24"
-    frontend_port_settings = [{
-      name = "frontend_port"
-      port = 80
-    }]
     appgw_routings = [{
-      name                       = "http_routing_rule"
+      name                       = "web_app_http_routing_rule"
       rule_type                  = "PathBasedRouting"
-      http_listener_name         = "http_listener"
+      http_listener_name         = "web_app_http_listener"
       backend_address_pool_name  = "backend_pool_images"
       backend_http_settings_name = "images_http_settings"
       url_path_map_name          = "url_path_map"
     }]
     client_name           = "launch"
     environment           = "demo"
-    location              = "East Us 2"
-    location_short        = "eastus2"
     logs_destinations_ids = []
     stack                 = "appgateway"
     subnet_cidr           = "10.0.0.0/24"
@@ -54,10 +46,10 @@ app_gateways = {
       port = 80
     }]
     create_subnet                         = false
-    custom_ip_name                        = "first-app-gtw-ip"
-    custom_ip_label                       = "first-app-gtw-ip-label"
-    custom_frontend_ip_configuration_name = "first_fe_ip_config"
-    custom_appgw_name                     = "first-app-gtw"
+    custom_ip_name                        = "web-app-gtw-ip"
+    custom_ip_label                       = "web-app-gtw-ip-label"
+    custom_frontend_ip_configuration_name = "web_app_fe_ip_config"
+    custom_appgw_name                     = "web-app-gtw"
     appgw_url_path_map = [{
       name                                = "url_path_map"
       default_backend_address_pool_name   = "backend_pool_images"
@@ -125,7 +117,7 @@ app_gateways = {
         conditions = [{
           ignore_case = true
           negate      = false
-          pattern     = "pip-appgateway-launch-eastus2-demo.eastus2.cloudapp.azure.com"
+          pattern     = "pip-appgateway-launch-eastus-demo.eastus.cloudapp.azure.com"
           variable    = "var_host"
         }]
         request_header_configurations = [{
@@ -145,4 +137,4 @@ subnet_prefixes = ["10.0.0.0/24"]
 address_space   = ["10.0.0.0/16"]
 subnet_names    = ["app-gtw-subnet"]
 environment     = "demo"
-location        = "East Us 2"
+location        = "eastus2"

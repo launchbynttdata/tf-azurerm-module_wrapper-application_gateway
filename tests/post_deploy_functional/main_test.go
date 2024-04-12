@@ -32,9 +32,6 @@ func TestApplicationGateway(t *testing.T) {
 		SetTestConfigFolderName(testConfigsExamplesFolderDefault).
 		SetTestConfigFileName(infraTFVarFileNameDefault).
 		SetTestSpecificFlags(map[string]types.TestFlags{
-			"with_vnet": {
-				"IS_TERRAFORM_IDEMPOTENT_APPLY": false,
-			},
 			"with_web_app": {
 				"IS_TERRAFORM_IDEMPOTENT_APPLY": false,
 			},
