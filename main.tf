@@ -10,7 +10,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-module "app-gateway" {
+module "app_gateway" {
   source  = "claranet/app-gateway/azurerm"
   version = "7.7.2"
 

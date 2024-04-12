@@ -14,7 +14,7 @@ In this example, we deploy an application gateway with a backend pool and HTTP l
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.98.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.99.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.0 |
 
 ## Modules
@@ -26,7 +26,7 @@ In this example, we deploy an application gateway with a backend pool and HTTP l
 | <a name="module_network"></a> [network](#module\_network) | Azure/vnet/azurerm | 4.1.0 |
 | <a name="module_network_security_group"></a> [network\_security\_group](#module\_network\_security\_group) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-network_security_group.git | 1.0.0 |
 | <a name="module_nsg_subnet_association"></a> [nsg\_subnet\_association](#module\_nsg\_subnet\_association) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-nsg_subnet_association.git | 1.0.0 |
-| <a name="module_app-gateway"></a> [app-gateway](#module\_app-gateway) | ../.. | n/a |
+| <a name="module_app_gateway"></a> [app\_gateway](#module\_app\_gateway) | ../.. | n/a |
 | <a name="module_vm_nic"></a> [vm\_nic](#module\_vm\_nic) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-network_interface.git | 1.0.0 |
 | <a name="module_jumpbox_nic"></a> [jumpbox\_nic](#module\_jumpbox\_nic) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-network_interface.git | 1.0.0 |
 | <a name="module_jumpbox_pip"></a> [jumpbox\_pip](#module\_jumpbox\_pip) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-public_ip.git | 1.0.0 |
@@ -47,7 +47,6 @@ In this example, we deploy an application gateway with a backend pool and HTTP l
 | <a name="input_resource_names_map"></a> [resource\_names\_map](#input\_resource\_names\_map) | A map of key to resource\_name that will be used by tf-launch-module\_library-resource\_name to generate resource names | <pre>map(object({<br>    name       = string<br>    max_length = optional(number, 60)<br>  }))</pre> | <pre>{<br>  "app_gateway": {<br>    "max_length": 80,<br>    "name": "appgw"<br>  },<br>  "app_service": {<br>    "max_length": 80,<br>    "name": "appsvc"<br>  },<br>  "network_security_group": {<br>    "max_length": 80,<br>    "name": "nsg"<br>  },<br>  "resource_group": {<br>    "max_length": 90,<br>    "name": "rg"<br>  },<br>  "vnet": {<br>    "max_length": 80,<br>    "name": "vnet"<br>  },<br>  "web_app_images": {<br>    "max_length": 80,<br>    "name": "webapp"<br>  },<br>  "web_app_videos": {<br>    "max_length": 80,<br>    "name": "webapp"<br>  }<br>}</pre> | no |
 | <a name="input_environment_number"></a> [environment\_number](#input\_environment\_number) | The environment count for the respective environment. Defaults to 000. Increments in value of 1 | `string` | `"000"` | no |
 | <a name="input_resource_number"></a> [resource\_number](#input\_resource\_number) | The resource count for the respective resource. Defaults to 000. Increments in value of 1 | `string` | `"000"` | no |
-| <a name="input_region"></a> [region](#input\_region) | Azure Region in which the infra needs to be provisioned | `string` | `"eastus2"` | no |
 | <a name="input_logical_product_family"></a> [logical\_product\_family](#input\_logical\_product\_family) | (Required) Name of the product family for which the resource is created.<br>    Example: org\_name, department\_name. | `string` | `"launch"` | no |
 | <a name="input_logical_product_service"></a> [logical\_product\_service](#input\_logical\_product\_service) | (Required) Name of the product service for which the resource is created.<br>    For example, backend, frontend, middleware etc. | `string` | `"network"` | no |
 | <a name="input_subnet_prefixes"></a> [subnet\_prefixes](#input\_subnet\_prefixes) | (Required) The address prefix to use for the subnet. | `list(string)` | n/a | yes |

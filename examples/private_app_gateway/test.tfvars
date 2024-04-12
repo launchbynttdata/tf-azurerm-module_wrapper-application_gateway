@@ -28,8 +28,6 @@ app_gateways = {
     }]
     client_name           = "launch"
     environment           = "demo"
-    location              = "East Us"
-    location_short        = "eastus"
     logs_destinations_ids = []
     stack                 = "appgateway"
     frontend_port_settings = [

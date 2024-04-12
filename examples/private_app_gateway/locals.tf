@@ -37,7 +37,7 @@ locals {
     source_port_range          = "*"
     destination_port_range     = "*"
     source_address_prefix      = "*"
-    destination_address_prefix = module.app-gateway.appgw_public_ip_address["first_gateway"]
+    destination_address_prefix = module.app_gateway.appgw_public_ip_address["first_gateway"]
   }]
 
   all_security_rules = concat(var.security_rules, local.additional_security_rule)

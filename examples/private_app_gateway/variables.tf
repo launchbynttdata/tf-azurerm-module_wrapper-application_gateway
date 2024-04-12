@@ -207,12 +207,6 @@ variable "resource_number" {
   type        = string
 }
 
-variable "region" {
-  description = "Azure Region in which the infra needs to be provisioned"
-  default     = "eastus2"
-  type        = string
-}
-
 variable "logical_product_family" {
   type        = string
   description = <<EOF

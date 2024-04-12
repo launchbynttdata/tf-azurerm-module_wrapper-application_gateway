@@ -24,8 +24,6 @@ app_gateways = {
     }]
     client_name           = "launch"
     environment           = "demo"
-    location              = "East Us2"
-    location_short        = "eastus"
     logs_destinations_ids = []
     stack                 = "appgateway"
     virtual_network_name  = "vnet"
@@ -40,8 +38,6 @@ app_gateways = {
     }]
     client_name           = "launch"
     environment           = "demo"
-    location              = "East Us2"
-    location_short        = "eastus2"
     logs_destinations_ids = []
     stack                 = "appgateway"
     subnet_cidr           = "10.0.0.0/24"
@@ -141,4 +137,4 @@ subnet_prefixes = ["10.0.0.0/24"]
 address_space   = ["10.0.0.0/16"]
 subnet_names    = ["app-gtw-subnet"]
 environment     = "demo"
-location        = "East Us 2"
+location        = "eastus2"

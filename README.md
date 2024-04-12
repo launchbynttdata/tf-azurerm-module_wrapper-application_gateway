@@ -120,7 +120,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_app-gateway"></a> [app-gateway](#module\_app-gateway) | claranet/app-gateway/azurerm | 7.7.2 |
+| <a name="module_app_gateway"></a> [app\_gateway](#module\_app\_gateway) | claranet/app-gateway/azurerm | 7.7.2 |
 
 ## Resources
 

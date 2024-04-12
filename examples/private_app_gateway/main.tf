@@ -17,7 +17,7 @@ module "resource_names" {
 
   for_each = var.resource_names_map
 
-  region                  = join("", split("-", var.region))
+  region                  = join("", split("-", var.location))
   class_env               = var.environment
   cloud_resource_type     = each.value.name
   instance_env            = var.environment_number
@@ -31,7 +31,7 @@ module "resource_group" {
   source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-resource_group.git?ref=1.0.0"
 
   name     = local.resource_group_name
-  location = var.region
+  location = var.location
   tags = {
     resource_name = local.resource_group_name
   }
@@ -75,7 +75,7 @@ module "nsg_subnet_association" {
 
 }
 
-module "app-gateway" {
+module "app_gateway" {
   source = "../.."
 
   app_gateways = local.app_gateways
