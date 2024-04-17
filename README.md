@@ -61,22 +61,22 @@ https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/
   2. https://learn.microsoft.com/en-us/azure/application-gateway/application-gateway-private-deployment?tabs=portal
 
 
-5. When creating Application Gateway, what is the need of adding specifc rules on network security group attached to the subnet in which Application Gateway resides?
+  5. When creating Application Gateway, what is the need of adding specifc rules on network security group attached to the subnet in which Application Gateway resides?
 
-  Point number 2 and 3 in answer of the above question, help answering this question. More documentation references can be found [here](https://learn.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure#network-security-groups)
+    Point number 2 and 3 in answer of the above question, help answering this question. More documentation references can be found [here](https://learn.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure#network-security-groups)
 
-6. We can user `private links + private endpoints` to make Application Gateway privately accessible. What is the difference in the two mechanisms(using a private IP vs using private links)?
-Private Link allows you to extend private connectivity to Application Gateway via a Private Endpoint in the following scenarios:
+  6. We can user `private links + private endpoints` to make Application Gateway privately accessible. What is the difference in the two mechanisms(using a private IP vs using private links)?
+  Private Link allows you to extend private connectivity to Application Gateway via a Private Endpoint in the following scenarios:
 
-  - VNet in the same or different region from Application Gateway
-  - VNet in the same or different subscription from Application Gateway
-  - VNet in the same or different subscription and the same or different Microsoft Entra tenant from Application Gateway
+    - VNet in the same or different region from Application Gateway
+    - VNet in the same or different subscription from Application Gateway
+    - VNet in the same or different subscription and the same or different Microsoft Entra tenant from Application Gateway
 
-  If any of the features below are applicable/needed we should be using `private links + private endpoints`. `private IP` deployment will not be useful for these scenarios.
+    If any of the features below are applicable/needed we should be using `private links + private endpoints`. `private IP` deployment will not be useful for these scenarios.
 
-  References can be found here:
-  1. https://learn.microsoft.com/en-us/azure/application-gateway/private-link
-  2. https://learn.microsoft.com/en-us/azure/application-gateway/private-link-configure?tabs=portal
+    References can be found here:
+    1. https://learn.microsoft.com/en-us/azure/application-gateway/private-link
+    2. https://learn.microsoft.com/en-us/azure/application-gateway/private-link-configure?tabs=portal
 
 ## Pre-Commit hooks
 
