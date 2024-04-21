@@ -9,6 +9,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 variable "app_gateways" {
   type = map(object({
     appgw_backend_http_settings = list(object({
@@ -25,11 +26,6 @@ variable "app_gateways" {
       trusted_root_certificate_names      = optional(list(string), [])
       authentication_certificate          = optional(string)
       connection_draining_timeout_sec     = optional(number)
-    })),
-    appgw_backend_pools = list(object({
-      name         = string
-      fqdns        = optional(list(string))
-      ip_addresses = optional(list(string))
     })),
     appgw_http_listeners = list(object({
       name                           = string
@@ -72,6 +68,14 @@ variable "app_gateways" {
         paths                       = optional(list(string), [])
       }))
     })), []),
+    client_name           = string,
+    environment           = string,
+    location_short        = optional(string, ""),
+    logs_destinations_ids = list(string),
+    stack                 = string,
+    app_gateway_tags      = optional(map(string), {}),
+    custom_appgw_name     = optional(string, ""),
+    create_subnet         = bool,
     appgw_rewrite_rule_set = optional(list(object({
       name = string
       rewrite_rules = list(object({
@@ -120,55 +124,113 @@ variable "app_gateways" {
     frontend_port_settings = list(object({
       name = string
       port = number
-    })),
-    trusted_root_certificate_configs = optional(list(object({
-      name                = string
-      data                = optional(string)
-      file_path           = optional(string)
-      key_vault_secret_id = optional(string)
-    })), []),
-    ssl_certificates_configs = optional(list(object({
-      name                = string
-      data                = optional(string)
-      password            = optional(string)
-      key_vault_secret_id = optional(string)
-    })), []),
-    user_assigned_identity_id                  = optional(string, null),
-    client_name                                = string,
-    environment                                = string,
-    location                                   = string,
-    location_short                             = optional(string, ""),
-    logs_destinations_ids                      = list(string),
-    resource_group_name                        = string,
-    stack                                      = string,
-    subnet_cidr                                = string,
-    virtual_network_name                       = string,
-    app_gateway_tags                           = optional(map(string), {}),
-    custom_appgw_name                          = optional(string, ""),
-    create_subnet                              = bool,
-    subnet_id                                  = optional(string),
-    subnet_resource_group_name                 = optional(string),
-    custom_ip_name                             = optional(string, "")
-    custom_ip_label                            = optional(string, "")
-    custom_frontend_ip_configuration_name      = optional(string, "")
-    appgw_private                              = optional(bool, false)
-    appgw_private_ip                           = optional(string, "")
-    custom_frontend_priv_ip_configuration_name = optional(string, "")
-    ip_allocation_method                       = optional(string, "Static")
-    ip_sku                                     = optional(string, "Standard")
-    ip_tags                                    = optional(map(string), {})
-    ip_ddos_protection_mode                    = optional(string, "Disabled")
-    ip_ddos_protection_plan_id                 = optional(string, null)
-    create_nsg                                 = optional(bool, false)
-    create_nsg_healthprobe_rule                = optional(bool, false)
-    create_nsg_https_rule                      = optional(bool, false)
-    custom_nsg_name                            = optional(string, "")
-    custom_nsr_healthcheck_name                = optional(string, "")
-    custom_nsr_https_name                      = optional(string, "")
-    custom_subnet_name                         = optional(string, "")
-    enable_http2                               = optional(bool, false)
-    firewall_policy_id                         = optional(string, null)
-    force_firewall_policy_association          = optional(bool, false)
-    nsr_https_source_address_prefix            = optional(string, "")
+    }))
+    custom_ip_name                        = optional(string, "")
+    custom_ip_label                       = optional(string, "")
+    custom_frontend_ip_configuration_name = optional(string, "")
   }))
+}
+
+//variables required by resource names module
+variable "resource_names_map" {
+  description = "A map of key to resource_name that will be used by tf-launch-module_library-resource_name to generate resource names"
+  type = map(object({
+    name       = string
+    max_length = optional(number, 60)
+  }))
+
+  default = {
+    resource_group = {
+      name       = "rg"
+      max_length = 90
+    }
+    storage_account = {
+      name       = "sa"
+      max_length = 24
+    }
+    app_gateway = {
+      name       = "appgw"
+      max_length = 80
+    }
+    vnet = {
+      name       = "vnet"
+      max_length = 80
+    }
+  }
+}
+
+variable "environment_number" {
+  description = "The environment count for the respective environment. Defaults to 000. Increments in value of 1"
+  default     = "000"
+  type        = string
+}
+
+variable "resource_number" {
+  description = "The resource count for the respective resource. Defaults to 000. Increments in value of 1"
+  default     = "000"
+  type        = string
+}
+
+variable "logical_product_family" {
+  type        = string
+  description = <<EOF
+    (Required) Name of the product family for which the resource is created.
+    Example: org_name, department_name.
+  EOF
+  nullable    = false
+
+  validation {
+    condition     = can(regex("^[_\\-A-Za-z0-9]+$", var.logical_product_family))
+    error_message = "The variable must contain letters, numbers, -, _, and .."
+  }
+
+  default = "launch"
+}
+
+variable "logical_product_service" {
+  type        = string
+  description = <<EOF
+    (Required) Name of the product service for which the resource is created.
+    For example, backend, frontend, middleware etc.
+  EOF
+  nullable    = false
+
+  validation {
+    condition     = can(regex("^[_\\-A-Za-z0-9]+$", var.logical_product_service))
+    error_message = "The variable must contain letters, numbers, -, _, and .."
+  }
+
+  default = "appgw"
+}
+
+// variables required by network module
+variable "subnet_prefixes" {
+  type        = list(string)
+  description = "(Required) The address prefix to use for the subnet."
+}
+
+variable "address_space" {
+  type        = list(string)
+  description = "(Required)The address space that is used by the virtual network."
+}
+
+variable "subnet_names" {
+  type        = list(string)
+  description = "(Required) The names of the subnets to be created."
+}
+
+variable "environment" {
+  type        = string
+  description = "(Required) Project environment."
+}
+
+variable "location" {
+  type        = string
+  description = "(Required) Azure location."
+}
+
+variable "tags" {
+  type        = map(string)
+  default     = {}
+  description = "A map of tags to add to the resources created by the module."
 }

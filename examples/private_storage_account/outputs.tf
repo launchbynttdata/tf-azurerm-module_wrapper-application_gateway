@@ -176,8 +176,7 @@ output "resource_group_name" {
   description = "Resource group name"
 }
 
-output "password" {
-  value       = local.password
-  description = "Password used for certificate generation, key vault certificate upload and VMs."
-  sensitive   = false
+output "storage_account_web_endpoint" {
+  value       = module.storage_account.primary_web_endpoint
+  description = "URL for the storage account's hosted website."
 }

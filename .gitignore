@@ -63,3 +63,15 @@ azure_env.sh
 
 # VS Code
 .vscode/
+
+# Ignore all cert related files in the examples directory
+*.crt
+*.key
+*.pem
+*.pfx
+*.cer
+*.csr
+*.srl
+*.cert
+*.ext
+.DS_Store

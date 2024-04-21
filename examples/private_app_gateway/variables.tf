@@ -26,11 +26,11 @@ variable "app_gateways" {
       authentication_certificate          = optional(string)
       connection_draining_timeout_sec     = optional(number)
     })),
-    appgw_backend_pools = list(object({
+    appgw_backend_pools = optional(list(object({
       name         = string
       fqdns        = optional(list(string))
       ip_addresses = optional(list(string))
-    })),
+    }))),
     appgw_http_listeners = list(object({
       name                           = string
       frontend_ip_configuration_name = optional(string)
@@ -71,6 +71,18 @@ variable "app_gateways" {
         redirect_configuration_name = optional(string)
         paths                       = optional(list(string), [])
       }))
+    })), []),
+    trusted_root_certificate_configs = optional(list(object({
+      name                = string
+      data                = optional(string)
+      file_path           = optional(string)
+      key_vault_secret_id = optional(string)
+    })), []),
+    ssl_certificates_configs = optional(list(object({
+      name                = string
+      data                = optional(string)
+      password            = optional(string)
+      key_vault_secret_id = optional(string)
     })), []),
     client_name           = string,
     environment           = string,
@@ -129,6 +141,7 @@ variable "app_gateways" {
       name = string
       port = number
     }))
+    user_assigned_identity_id                  = optional(string, null),
     subnet_cidr                                = string,
     custom_ip_name                             = optional(string, "")
     custom_ip_label                            = optional(string, "")
@@ -458,4 +471,244 @@ variable "number" {
 variable "special" {
   type    = bool
   default = false
+}
+
+//variables for role assignment
+variable "role_assignments" {
+  type = map(object({
+    role_definition_name = string
+  }))
+  description = "Role assignments to be created"
+  default     = {}
+}
+
+variable "role_assignments_owner" {
+  type = map(object({
+    role_definition_name = string
+  }))
+  description = "Role assignments to be created"
+  default     = {}
+}
+
+//variables for key vault
+variable "enable_rbac_authorization" {
+  description = "Enable RBAC authorization for the key vault"
+  type        = bool
+  default     = false
+}
+
+variable "network_acls" {
+  description = "Network ACLs for the key vault"
+  type = object({
+    bypass                     = string
+    default_action             = string
+    ip_rules                   = optional(list(string))
+    virtual_network_subnet_ids = optional(list(string))
+  })
+
+  default = {
+    bypass                     = "AzureServices"
+    default_action             = "Allow"
+    ip_rules                   = []
+    virtual_network_subnet_ids = []
+  }
+}
+
+variable "public_network_access_enabled" {
+  description = " (Optional) Whether public network access is allowed for this Key Vault. Defaults to true."
+  type        = bool
+  default     = true
+}
+
+# variable "certificates" {
+#   description = "List of certificates to be imported. The pfx files should be present in the root of the module (path.root) and its name denoted as certificate_name"
+#   type = map(object({
+#     certificate_name = string
+#   }))
+
+#   default = {}
+# }
+
+//Variables related to certificate module
+variable "certificates" {
+  description = "List of certificates to be imported. If `filepath` is specified then the pfx files should be present in the root of the module (path.root). If `content` is specified then the content of the certificate should be provided in base 64 encoded format. Only one of them should be provided."
+  type = map(object({
+    contents = optional(string)
+    filepath = optional(string)
+    password = string
+  }))
+
+  default = {}
+}
+
+variable "algorithm" {
+  description = "Name of the algorithm to use when generating the private key. Currently-supported values are: RSA, ECDSA, ED25519."
+  type        = string
+  default     = "RSA"
+}
+
+variable "rsa_bits" {
+  description = "Size of the RSA key to create in bits. Defaults to 2048 bits."
+  type        = number
+  default     = 4096
+}
+
+variable "ca_private_key" {
+  description = "Name for the Private key for the CA certificate file."
+  type        = string
+  default     = "ca_private_key.pem"
+}
+
+variable "ca_certificate_attributes" {
+  description = "Attributes for the CA certificate."
+  type = object({
+    dns_names         = list(string)
+    is_ca_certificate = bool
+    uris              = list(string)
+    subject = object({
+      common_name         = string
+      country             = string
+      locality            = string
+      organization        = string
+      organizational_unit = string
+      province            = string
+      postal_code         = string
+      street_address      = list(string)
+    })
+    validity_period_hours = number
+    allowed_uses          = list(string)
+  })
+  default = {
+    dns_names         = ["contoso.com"]
+    is_ca_certificate = true
+    uris              = ["https://*.contoso.com"]
+    subject = {
+      common_name         = "example.com"
+      country             = "US"
+      locality            = "Canton"
+      province            = "MI"
+      organization        = "ACME Examples, Inc"
+      organizational_unit = "IT"
+      postal_code         = "48187"
+      street_address      = ["1234", "Elm St"]
+    }
+    validity_period_hours = 1200
+    allowed_uses = [
+      "key_encipherment",
+      "digital_signature",
+      "server_auth",
+      "cert_signing"
+    ]
+  }
+}
+
+variable "cert_private_key" {
+  description = "Name for the Private key for the CA certificate file."
+  type        = string
+  default     = "cert_private_key.pem"
+}
+
+variable "server_certificate_attributes" {
+  description = "Attributes for the CA certificate."
+  type = object({
+    dns_names = list(string)
+    uris      = list(string)
+    subject = object({
+      common_name         = string
+      country             = string
+      locality            = string
+      organization        = string
+      organizational_unit = string
+      province            = string
+      postal_code         = string
+      street_address      = list(string)
+    })
+    validity_period_hours = number
+    allowed_uses          = list(string)
+  })
+  default = {
+    dns_names         = ["apgw.contoso.com", "apgw", "localhost", "myvm", "*.contoso.com"]
+    is_ca_certificate = true
+    uris              = ["https://*.contoso.com"]
+    subject = {
+      common_name         = "contoso.com"
+      country             = "US"
+      locality            = "Canton"
+      province            = "MI"
+      organization        = "ACME Examples, Inc"
+      organizational_unit = "IT"
+      postal_code         = "48188"
+      street_address      = ["1234", "Duck St"]
+    }
+    validity_period_hours = 12
+    allowed_uses = [
+      "key_encipherment",
+      "digital_signature",
+      "server_auth",
+    ]
+  }
+
+}
+
+variable "server_cert" {
+  description = "Server certificate name"
+  type        = string
+  default     = "server_cert.pem"
+}
+
+variable "ca_cert" {
+  description = "CA certificate name"
+  type        = string
+  default     = "ca_cert.pem"
+}
+
+variable "ca_cert_pfx" {
+  description = "CA certificate name(pfx format)"
+  type        = string
+  default     = "ca_cert.pfx"
+}
+
+variable "server_cert_pfx" {
+  description = "Server certificate name"
+  type        = string
+  default     = "server_cert.pfx"
+}
+
+variable "chained_cert" {
+  description = "Chain certificate name"
+  type        = string
+  default     = "chained_cert.pem"
+}
+
+//variables for storage account module
+variable "tags" {
+  type        = map(string)
+  default     = {}
+  description = "A map of tags to add to the resources created by the module."
+}
+
+//variables for private dns zone module
+variable "zone_name" {
+  type = string
+}
+
+//variables for private dns zone link module
+variable "registration_enabled" {
+  description = "(Optional) Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled? Defaults to false."
+  type        = bool
+  default     = false
+}
+
+//variables for private dns zone record module
+variable "a_records" {
+  description = "A list of A records to create"
+  type = map(object({
+    name                = string
+    resource_group_name = string
+    zone_name           = string
+    ttl                 = number
+    records             = list(string)
+    tags                = optional(map(string))
+  }))
+  default = {}
 }

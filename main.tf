@@ -18,6 +18,9 @@ module "app_gateway" {
   appgw_backend_http_settings                = each.value.appgw_backend_http_settings
   appgw_backend_pools                        = each.value.appgw_backend_pools
   appgw_http_listeners                       = each.value.appgw_http_listeners
+  trusted_root_certificate_configs           = each.value.trusted_root_certificate_configs
+  user_assigned_identity_id                  = each.value.user_assigned_identity_id
+  ssl_certificates_configs                   = each.value.ssl_certificates_configs
   appgw_routings                             = each.value.appgw_routings
   appgw_url_path_map                         = each.value.appgw_url_path_map
   appgw_probes                               = each.value.appgw_probes

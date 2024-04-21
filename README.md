@@ -38,12 +38,12 @@ https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/
 
   https://learn.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure?WT.mc_id=Portal-Microsoft_Azure_HybridNetworking#network-security-groups
 
-  3. Can we deploy Application Gateway with `private IP address` only, without giving it a `public IP address`? 
-  Yes. There are additional features available along with just providing the `private IP address` only. The features are mentioned [here](https://learn.microsoft.com/en-us/azure/application-gateway/application-gateway-private-deployment?tabs=portal). 
+  3. Can we deploy Application Gateway with `private IP address` only, without giving it a `public IP address`?
+  Yes. There are additional features available along with just providing the `private IP address` only. The features are mentioned [here](https://learn.microsoft.com/en-us/azure/application-gateway/application-gateway-private-deployment?tabs=portal).
   However since these features are in private/public preview, they will not be available on Azure government cloud(as of 04/16/2024).
 
   4. Why is there need of having `public IP address` along with `private IP address` for Application Gateway deployment?
-  
+
   Application Gateway v2 currently supports the following combinations:
 
   - Private IP address and public IP address
@@ -77,6 +77,25 @@ https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/
     References can be found here:
     1. https://learn.microsoft.com/en-us/azure/application-gateway/private-link
     2. https://learn.microsoft.com/en-us/azure/application-gateway/private-link-configure?tabs=portal
+
+  7. Azure Key Vault allow public access from specific virtual networks and IP addresses functionality does not work in terraform as the settings are specified under Azure Portal. [This](https://github.com/hashicorp/terraform-provider-azurerm/issues/25414) post explains what should be the configuration in terraform to achieve this configuration.
+
+  8. The example in `private_app_gateway` folder does end to end deployment of an application gateway instance pointing to private storage account that hosts static websites. The certificates used for TLS termination on application gateway are openssl certificates. Jumpbox virtual machine is deployed in order to test the private application gateway instance. Calling url `apgw.contoso.com` should point to static website. However unless the root CA certificate(present in key vault deployes with the example) is added manually to browser's trust store one would get the `insecure SSL certificate` warning.
+
+## Provider.tf file
+Specific provider configuration is used when deploying the example in folder `private_app_gateway`. The contents are specified here.
+
+```
+provider "azurerm" {
+  skip_provider_registration = true # This is only required when the User, Service Principal, or Identity running Terraform lacks the permissions to register Azure Resource Providers.
+  features {
+    key_vault {
+      purge_soft_delete_on_destroy    = true  //Should the azurerm_key_vault resource be permanently deleted (e.g. purged) when destroyed? Defaults to true
+      recover_soft_deleted_key_vaults = false //Should the azurerm_key_vault resource recover a Soft-Deleted Key Vault? Defaults to true.
+    }
+  }
+}
+```
 
 ## Pre-Commit hooks
 
