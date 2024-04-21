@@ -38,6 +38,45 @@ https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/
 
   https://learn.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure?WT.mc_id=Portal-Microsoft_Azure_HybridNetworking#network-security-groups
 
+  3. Can we deploy Application Gateway with `private IP address` only, without giving it a `public IP address`? 
+  Yes. There are additional features available along with just providing the `private IP address` only. The features are mentioned [here](https://learn.microsoft.com/en-us/azure/application-gateway/application-gateway-private-deployment?tabs=portal). 
+  However since these features are in private/public preview, they will not be available on Azure government cloud(as of 04/16/2024).
+
+  4. Why is there need of having `public IP address` along with `private IP address` for Application Gateway deployment?
+  
+  Application Gateway v2 currently supports the following combinations:
+
+  - Private IP address and public IP address
+  - Public IP address only
+  - Private IP address only (preview)
+
+  It is discussed in question above as to why `Private IP address only (preview)` can not be considered yet. For `Private IP address and public IP address` combination there are certain restrictions:
+
+  1. All Application Gateways v2 deployments must contain public facing frontend IP configuration to enable communication to the Gateway Manager service tag.
+  2. Network Security Group associations require rules to allow inbound access from GatewayManager and Outbound access to Internet.
+  3. When introducing a default route (0.0.0.0/0) to forward traffic anywhere other than the Internet, metrics, monitoring, and updates of the gateway result in a failed status.
+
+  Point number 1 answers the question. For references check these documenation links:
+  1. https://learn.microsoft.com/en-us/azure/application-gateway/configuration-frontend-ip
+  2. https://learn.microsoft.com/en-us/azure/application-gateway/application-gateway-private-deployment?tabs=portal
+
+
+  5. When creating Application Gateway, what is the need of adding specifc rules on network security group attached to the subnet in which Application Gateway resides?
+
+    Point number 2 and 3 in answer of the above question, help answering this question. More documentation references can be found [here](https://learn.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure#network-security-groups)
+
+  6. We can user `private links + private endpoints` to make Application Gateway privately accessible. What is the difference in the two mechanisms(using a private IP vs using private links)?
+  Private Link allows you to extend private connectivity to Application Gateway via a Private Endpoint in the following scenarios:
+
+    - VNet in the same or different region from Application Gateway
+    - VNet in the same or different subscription from Application Gateway
+    - VNet in the same or different subscription and the same or different Microsoft Entra tenant from Application Gateway
+
+    If any of the features below are applicable/needed we should be using `private links + private endpoints`. `private IP` deployment will not be useful for these scenarios.
+
+    References can be found here:
+    1. https://learn.microsoft.com/en-us/azure/application-gateway/private-link
+    2. https://learn.microsoft.com/en-us/azure/application-gateway/private-link-configure?tabs=portal
 
 ## Pre-Commit hooks
 
