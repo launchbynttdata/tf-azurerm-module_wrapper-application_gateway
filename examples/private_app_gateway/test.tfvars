@@ -75,8 +75,8 @@ app_gateways = {
     custom_frontend_priv_ip_configuration_name = "first_fe_ip_config_private"
     custom_frontend_ip_configuration_name      = "static_app_fe_ip_config"
     appgw_private                              = true
-    appgw_private_ip                           = "10.0.0.6"
-    subnet_cidr                                = "10.0.0.0/24"
+    appgw_private_ip                           = "10.32.52.6"
+    subnet_cidr                                = "10.32.52.0/27"
     create_nsg                                 = false
     create_nsg_healthprobe_rule                = false
     create_nsg_https_rule                      = false
@@ -88,11 +88,11 @@ app_gateways = {
     enable_http2                               = false
   }
 }
-address_space   = ["10.0.0.0/16"]
+address_space   = ["10.32.52.0/23"]
 environment     = "demo"
 location        = "eastus"
 subnet_names    = ["appgw-subnet", "subnet1", "jumpbox-subnet"]
-subnet_prefixes = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
+subnet_prefixes = ["10.32.52.0/27", "10.32.52.32/27", "10.32.52.64/26"]
 resource_names_map = {
   resource_group = {
     name       = "rg"
@@ -135,8 +135,8 @@ security_rules = [{
   direction                  = "Inbound"
   source_port_range          = "*"
   destination_port_range     = "443"
-  source_address_prefix      = "10.0.2.0/24"
-  destination_address_prefix = "10.0.0.0/24"
+  source_address_prefix      = "10.32.52.64/26"
+  destination_address_prefix = "10.32.52.0/27"
   },
   {
     name                       = "AllowHttpsToAppGwPrivateIP"
@@ -146,8 +146,8 @@ security_rules = [{
     direction                  = "Inbound"
     source_port_range          = "*"
     destination_port_range     = "443"
-    source_address_prefix      = "10.0.2.0/24"
-    destination_address_prefix = "10.0.0.6"
+    source_address_prefix      = "10.32.52.64/26"
+    destination_address_prefix = "10.32.52.6"
   },
   {
     name                       = "AllowHttpsGatewayManager"
