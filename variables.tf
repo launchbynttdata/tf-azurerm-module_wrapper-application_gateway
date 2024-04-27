@@ -133,6 +133,10 @@ variable "app_gateways" {
       password            = optional(string)
       key_vault_secret_id = optional(string)
     })), []),
+    autoscaling_parameters = optional(object({
+      min_capacity = number,
+      max_capacity = optional(number, 5) }
+    ), null),
     user_assigned_identity_id                  = optional(string, null),
     client_name                                = string,
     environment                                = string,

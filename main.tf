@@ -67,4 +67,6 @@ module "app_gateway" {
   firewall_policy_id                = each.value.firewall_policy_id
   force_firewall_policy_association = each.value.force_firewall_policy_association
 
+  autoscaling_parameters = each.value.autoscaling_parameters
+
 }

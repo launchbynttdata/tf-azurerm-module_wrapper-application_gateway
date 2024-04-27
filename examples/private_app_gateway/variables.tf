@@ -141,6 +141,10 @@ variable "app_gateways" {
       name = string
       port = number
     }))
+    autoscaling_parameters = optional(object({
+      min_capacity = number,
+      max_capacity = optional(number, 5) }
+    ), null),
     user_assigned_identity_id                  = optional(string, null),
     subnet_cidr                                = string,
     custom_ip_name                             = optional(string, "")

@@ -68,6 +68,10 @@ app_gateways = {
         port = 443
       }
     ]
+    autoscaling_parameters = {
+      min_capacity = 1
+      max_capacity = 6
+    }
     create_subnet                              = false
     custom_ip_name                             = "static-app-gtw-ip"
     custom_ip_label                            = "static-app-gtw-ip-label"
