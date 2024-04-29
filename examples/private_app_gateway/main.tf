@@ -18,8 +18,8 @@ module "app_gateway" {
   depends_on = [
     module.network,
     azurerm_key_vault_certificate.key_vault_certificate,
-    module.key_vault
-  ]
+    module.key_vault,
+  module.log_analytics_workspace]
 }
 
 module "resource_names" {
@@ -385,6 +385,19 @@ module "windows_vm_jumpbox" {
   network_interface_ids  = [module.jumpbox_nic.id]
   os_disk                = var.os_disk
   source_image_reference = var.jumpbox_source_image_reference
+}
+
+module "log_analytics_workspace" {
+  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-log_analytics_workspace.git?ref=1.0.0"
+
+  name                = local.log_analytics_workspace_name
+  location            = var.location
+  resource_group_name = local.resource_group_name
+  sku                 = var.log_analytics_workspace_sku
+  retention_in_days   = var.log_analytics_workspace_retention_in_days
+
+  depends_on = [module.resource_group]
+
 }
 
 data "http" "ip" {

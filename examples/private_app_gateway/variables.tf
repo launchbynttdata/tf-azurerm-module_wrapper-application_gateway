@@ -84,14 +84,13 @@ variable "app_gateways" {
       password            = optional(string)
       key_vault_secret_id = optional(string)
     })), []),
-    client_name           = string,
-    environment           = string,
-    location_short        = optional(string, ""),
-    logs_destinations_ids = list(string),
-    stack                 = string,
-    app_gateway_tags      = optional(map(string), {}),
-    custom_appgw_name     = optional(string, ""),
-    create_subnet         = bool,
+    client_name       = string,
+    environment       = string,
+    location_short    = optional(string, ""),
+    stack             = string,
+    app_gateway_tags  = optional(map(string), {}),
+    custom_appgw_name = optional(string, ""),
+    create_subnet     = bool,
     appgw_rewrite_rule_set = optional(list(object({
       name = string
       rewrite_rules = list(object({
@@ -169,6 +168,15 @@ variable "app_gateways" {
     firewall_policy_id                         = optional(string, null)
     force_firewall_policy_association          = optional(bool, false)
     nsr_https_source_address_prefix            = optional(string, "")
+    logs_destinations_ids                      = list(string) // Resource id of log analytics workspace or storage account
+    logs_categories = optional(list(string), ["ApplicationGatewayAccessLog",
+      "ApplicationGatewayFirewallLog",
+    "ApplicationGatewayPerformanceLog"])
+    logs_metrics_categories         = optional(list(string), ["All"])
+    use_caf_naming                  = optional(bool, false)
+    custom_diagnostic_settings_name = optional(string, "")
+    name_prefix                     = optional(string, "")
+    name_suffix                     = optional(string, "")
   }))
 }
 
@@ -715,4 +723,17 @@ variable "a_records" {
     tags                = optional(map(string))
   }))
   default = {}
+}
+
+//variables for log analytics workspace module
+variable "log_analytics_workspace_sku" {
+  description = "Specifies the SKU of the Log Analytics Workspace. Possible values are Free, PerNode, Premium, Standard, Standalone, Unlimited, CapacityReservation, and PerGB2018 (new SKU as of 2018-04-03). Defaults to PerGB2018."
+  type        = string
+  default     = "PerGB2018"
+}
+
+variable "log_analytics_workspace_retention_in_days" {
+  description = "The retention period for the logs in days."
+  type        = number
+  default     = 30
 }

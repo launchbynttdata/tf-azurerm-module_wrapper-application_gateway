@@ -142,7 +142,6 @@ variable "app_gateways" {
     environment                                = string,
     location                                   = string,
     location_short                             = optional(string, ""),
-    logs_destinations_ids                      = list(string),
     resource_group_name                        = string,
     stack                                      = string,
     subnet_cidr                                = string,
@@ -174,5 +173,14 @@ variable "app_gateways" {
     firewall_policy_id                         = optional(string, null)
     force_firewall_policy_association          = optional(bool, false)
     nsr_https_source_address_prefix            = optional(string, "")
+    logs_destinations_ids                      = list(string) // Resource id of log analytics workspace or storage account
+    logs_categories = optional(list(string), ["ApplicationGatewayAccessLog",
+      "ApplicationGatewayFirewallLog",
+    "ApplicationGatewayPerformanceLog"])
+    logs_metrics_categories         = optional(list(string), ["All"])
+    use_caf_naming                  = optional(bool, false)
+    custom_diagnostic_settings_name = optional(string, "")
+    name_prefix                     = optional(string, "")
+    name_suffix                     = optional(string, "")
   }))
 }

@@ -11,16 +11,19 @@
 // limitations under the License.
 
 locals {
-  resource_group_name         = module.resource_names["resource_group"].minimal_random_suffix
-  network_security_group_name = module.resource_names["network_security_group"].minimal_random_suffix
-  user_managed_identity_name  = module.resource_names["user_managed_identity"].minimal_random_suffix
-  key_vault_name              = module.resource_names["key_vault"].minimal_random_suffix_without_any_separators
-  vnet_name                   = module.resource_names["vnet"].minimal_random_suffix
-  storage_account_name        = module.resource_names["storage_account"].minimal_random_suffix_without_any_separators
-  vnet_link_name              = module.resource_names["vnet_link"].minimal_random_suffix
-  app_gtwy_subnet_id          = lookup(module.network.vnet_subnets_name_id, "appgw-subnet", null)
-  vm_subnet_id                = lookup(module.network.vnet_subnets_name_id, "subnet1", null)
-  jumpbox_vm_subnet_id        = lookup(module.network.vnet_subnets_name_id, "jumpbox-subnet", null)
+  resource_group_name          = module.resource_names["resource_group"].minimal_random_suffix
+  network_security_group_name  = module.resource_names["network_security_group"].minimal_random_suffix
+  user_managed_identity_name   = module.resource_names["user_managed_identity"].minimal_random_suffix
+  key_vault_name               = module.resource_names["key_vault"].minimal_random_suffix_without_any_separators
+  vnet_name                    = module.resource_names["vnet"].minimal_random_suffix
+  storage_account_name         = module.resource_names["storage_account"].minimal_random_suffix_without_any_separators
+  vnet_link_name               = module.resource_names["vnet_link"].minimal_random_suffix
+  log_analytics_workspace_name = module.resource_names["log_analytics_workspace"].minimal_random_suffix
+  diagnostic_settings_name     = module.resource_names["diagnostic_settings"].minimal_random_suffix
+  app_gtwy_subnet_id           = lookup(module.network.vnet_subnets_name_id, "appgw-subnet", null)
+  vm_subnet_id                 = lookup(module.network.vnet_subnets_name_id, "subnet1", null)
+  jumpbox_vm_subnet_id         = lookup(module.network.vnet_subnets_name_id, "jumpbox-subnet", null)
+
 
   appgw_backend_pools = [
     {
@@ -42,6 +45,8 @@ locals {
       name                = "server-certificate"
       key_vault_secret_id = data.azurerm_key_vault_certificate.key_vault_certificate["server-certificate"].secret_id
     }]
+    logs_destinations_ids           = [module.log_analytics_workspace.id]
+    custom_diagnostic_settings_name = local.diagnostic_settings_name
   }) }
 
   additional_security_rule = [

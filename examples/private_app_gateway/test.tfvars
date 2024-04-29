@@ -90,6 +90,11 @@ app_gateways = {
     custom_subnet_name                         = "appgw-subnet"
     nsr_https_source_address_prefix            = "Any"
     enable_http2                               = false
+    logs_categories = ["ApplicationGatewayAccessLog",
+      "ApplicationGatewayFirewallLog",
+    "ApplicationGatewayPerformanceLog"]
+    logs_metrics_categories = []
+    use_caf_naming          = false
   }
 }
 address_space   = ["10.32.52.0/23"]
@@ -128,6 +133,14 @@ resource_names_map = {
   },
   vnet_link = {
     name       = "vnetlink"
+    max_length = 80
+  }
+  log_analytics_workspace = {
+    name       = "law"
+    max_length = 80
+  }
+  diagnostic_settings = {
+    name       = "ds"
     max_length = 80
   }
 }

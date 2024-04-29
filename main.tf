@@ -44,7 +44,6 @@ module "app_gateway" {
   frontend_port_settings = each.value.frontend_port_settings
   location               = each.value.location
   location_short         = each.value.location_short
-  logs_destinations_ids  = each.value.logs_destinations_ids
   resource_group_name    = each.value.resource_group_name
   stack                  = each.value.stack
 
@@ -67,6 +66,11 @@ module "app_gateway" {
   firewall_policy_id                = each.value.firewall_policy_id
   force_firewall_policy_association = each.value.force_firewall_policy_association
 
-  autoscaling_parameters = each.value.autoscaling_parameters
+  autoscaling_parameters          = each.value.autoscaling_parameters
+  logs_destinations_ids           = each.value.logs_destinations_ids
+  logs_categories                 = each.value.logs_categories
+  logs_metrics_categories         = each.value.logs_metrics_categories
+  use_caf_naming                  = each.value.use_caf_naming
+  custom_diagnostic_settings_name = each.value.custom_diagnostic_settings_name
 
 }
