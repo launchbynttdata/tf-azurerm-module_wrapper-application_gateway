@@ -19,26 +19,26 @@ In this example, we deploy an application gateway with a backend pool and HTTP l
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.1 |
 | <a name="provider_null"></a> [null](#provider\_null) | 3.2.2 |
 | <a name="provider_http"></a> [http](#provider\_http) | 3.4.2 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.101.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.102.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_app_gateway"></a> [app\_gateway](#module\_app\_gateway) | ../.. | n/a |
-| <a name="module_resource_names"></a> [resource\_names](#module\_resource\_names) | git::https://github.com/launchbynttdata/tf-launch-module_library-resource_name.git | 1.0.0 |
-| <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-resource_group.git | 1.0.0 |
-| <a name="module_user_managed_identity"></a> [user\_managed\_identity](#module\_user\_managed\_identity) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-user_managed_identity.git | 1.0.0 |
-| <a name="module_role_assignment_owner"></a> [role\_assignment\_owner](#module\_role\_assignment\_owner) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-role_assignment.git | 1.0.0 |
-| <a name="module_role_assignment"></a> [role\_assignment](#module\_role\_assignment) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-role_assignment.git | 1.0.0 |
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-key_vault.git | 2.0.0 |
-| <a name="module_network"></a> [network](#module\_network) | Azure/vnet/azurerm | 4.1.0 |
-| <a name="module_network_security_group"></a> [network\_security\_group](#module\_network\_security\_group) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-network_security_group.git | 1.0.0 |
-| <a name="module_nsg_subnet_association"></a> [nsg\_subnet\_association](#module\_nsg\_subnet\_association) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-nsg_subnet_association.git | 1.0.0 |
+| <a name="module_resource_names"></a> [resource\_names](#module\_resource\_names) | d2lqlh14iel5k2.cloudfront.net/module_library/resource_name/launch | ~> 1.0 |
+| <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | d2lqlh14iel5k2.cloudfront.net/module_primitive/resource_group/azurerm | ~> 1.0 |
+| <a name="module_user_managed_identity"></a> [user\_managed\_identity](#module\_user\_managed\_identity) | d2lqlh14iel5k2.cloudfront.net/module_primitive/user_managed_identity/azurerm | ~> 1.0 |
+| <a name="module_role_assignment_owner"></a> [role\_assignment\_owner](#module\_role\_assignment\_owner) | d2lqlh14iel5k2.cloudfront.net/module_primitive/role_assignment/azurerm | ~> 1.0 |
+| <a name="module_role_assignment"></a> [role\_assignment](#module\_role\_assignment) | d2lqlh14iel5k2.cloudfront.net/module_primitive/role_assignment/azurerm | ~> 1.0 |
+| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | d2lqlh14iel5k2.cloudfront.net/module_primitive/key_vault/azurerm | ~> 2.0 |
+| <a name="module_network"></a> [network](#module\_network) | d2lqlh14iel5k2.cloudfront.net/module_primitive/virtual_network/azurerm | ~> 2.0 |
+| <a name="module_network_security_group"></a> [network\_security\_group](#module\_network\_security\_group) | d2lqlh14iel5k2.cloudfront.net/module_primitive/network_security_group/azurerm | ~> 1.0 |
+| <a name="module_nsg_subnet_association"></a> [nsg\_subnet\_association](#module\_nsg\_subnet\_association) | d2lqlh14iel5k2.cloudfront.net/module_primitive/nsg_subnet_association/azurerm | ~> 1.0 |
 | <a name="module_storage_account"></a> [storage\_account](#module\_storage\_account) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-storage_account.git | feature/static-hosting |
-| <a name="module_private_dns_zone"></a> [private\_dns\_zone](#module\_private\_dns\_zone) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-private_dns_zone.git | 1.0.0 |
-| <a name="module_private_dns_zone_link"></a> [private\_dns\_zone\_link](#module\_private\_dns\_zone\_link) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-private_dns_vnet_link.git | 1.0.0 |
-| <a name="module_private_dns_records"></a> [private\_dns\_records](#module\_private\_dns\_records) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-private_dns_records.git | 1.0.0 |
+| <a name="module_private_dns_zone"></a> [private\_dns\_zone](#module\_private\_dns\_zone) | d2lqlh14iel5k2.cloudfront.net/module_primitive/private_dns_zone/azurerm | ~> 1.0 |
+| <a name="module_private_dns_zone_link"></a> [private\_dns\_zone\_link](#module\_private\_dns\_zone\_link) | d2lqlh14iel5k2.cloudfront.net/module_primitive/private_dns_vnet_link/azurerm | ~> 1.0 |
+| <a name="module_private_dns_records"></a> [private\_dns\_records](#module\_private\_dns\_records) | d2lqlh14iel5k2.cloudfront.net/module_primitive/private_dns_records/azurerm | ~> 1.0 |
 | <a name="module_jumpbox_nic"></a> [jumpbox\_nic](#module\_jumpbox\_nic) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-network_interface.git | 1.0.0 |
 | <a name="module_jumpbox_pip"></a> [jumpbox\_pip](#module\_jumpbox\_pip) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-public_ip.git | 1.0.0 |
 | <a name="module_windows_vm_jumpbox"></a> [windows\_vm\_jumpbox](#module\_windows\_vm\_jumpbox) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-windows_virtual_machine.git | 1.0.0 |

@@ -23,7 +23,8 @@ module "app_gateway" {
 }
 
 module "resource_names" {
-  source = "git::https://github.com/launchbynttdata/tf-launch-module_library-resource_name.git?ref=1.0.0"
+  source  = "d2lqlh14iel5k2.cloudfront.net/module_library/resource_name/launch"
+  version = "~> 1.0"
 
   for_each = var.resource_names_map
 
@@ -38,7 +39,8 @@ module "resource_names" {
 }
 
 module "resource_group" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-resource_group.git?ref=1.0.0"
+  source  = "d2lqlh14iel5k2.cloudfront.net/module_primitive/resource_group/azurerm"
+  version = "~> 1.0"
 
   name     = local.resource_group_name
   location = var.location
@@ -48,7 +50,8 @@ module "resource_group" {
 }
 
 module "user_managed_identity" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-user_managed_identity.git?ref=1.0.0"
+  source  = "d2lqlh14iel5k2.cloudfront.net/module_primitive/user_managed_identity/azurerm"
+  version = "~> 1.0"
 
   resource_group_name         = local.resource_group_name
   location                    = var.location
@@ -58,7 +61,8 @@ module "user_managed_identity" {
 }
 
 module "role_assignment_owner" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-role_assignment.git?ref=1.0.0"
+  source  = "d2lqlh14iel5k2.cloudfront.net/module_primitive/role_assignment/azurerm"
+  version = "~> 1.0"
 
   for_each             = local.role_assignments_owner
   scope                = each.value.scope
@@ -69,7 +73,8 @@ module "role_assignment_owner" {
 }
 
 module "role_assignment" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-role_assignment.git?ref=1.0.0"
+  source  = "d2lqlh14iel5k2.cloudfront.net/module_primitive/role_assignment/azurerm"
+  version = "~> 1.0"
 
   for_each             = local.role_assignments
   scope                = each.value.scope
@@ -80,7 +85,8 @@ module "role_assignment" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-key_vault.git?ref=2.0.0"
+  source  = "d2lqlh14iel5k2.cloudfront.net/module_primitive/key_vault/azurerm"
+  version = "~> 2.0"
 
   resource_group = {
     name     = local.resource_group_name
@@ -95,8 +101,8 @@ module "key_vault" {
 }
 
 module "network" {
-  source  = "Azure/vnet/azurerm"
-  version = "4.1.0"
+  source  = "d2lqlh14iel5k2.cloudfront.net/module_primitive/virtual_network/azurerm"
+  version = "~> 2.0"
 
   resource_group_name = local.resource_group_name
   use_for_each        = true
@@ -115,7 +121,8 @@ module "network" {
 }
 
 module "network_security_group" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-network_security_group.git?ref=1.0.0"
+  source  = "d2lqlh14iel5k2.cloudfront.net/module_primitive/network_security_group/azurerm"
+  version = "~> 1.0"
 
   name                = local.network_security_group_name
   location            = var.location
@@ -126,7 +133,8 @@ module "network_security_group" {
 }
 
 module "nsg_subnet_association" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-nsg_subnet_association.git?ref=1.0.0"
+  source  = "d2lqlh14iel5k2.cloudfront.net/module_primitive/nsg_subnet_association/azurerm"
+  version = "~> 1.0"
 
   network_security_group_id = module.network_security_group.network_security_group_id
   subnet_id                 = local.app_gtwy_subnet_id
@@ -263,7 +271,6 @@ data "local_file" "ca_certificate_pfx" {
     null_resource.pem2pfx_ca_cert
   ]
 }
-
 resource "azurerm_key_vault_certificate" "key_vault_certificate" {
   for_each     = local.certificates
   name         = each.key
@@ -323,7 +330,8 @@ EOF
 }
 
 module "private_dns_zone" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-private_dns_zone.git?ref=1.0.0"
+  source  = "d2lqlh14iel5k2.cloudfront.net/module_primitive/private_dns_zone/azurerm"
+  version = "~> 1.0"
 
   zone_name           = var.zone_name
   resource_group_name = local.resource_group_name
@@ -332,7 +340,8 @@ module "private_dns_zone" {
 }
 
 module "private_dns_zone_link" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-private_dns_vnet_link.git?ref=1.0.0"
+  source  = "d2lqlh14iel5k2.cloudfront.net/module_primitive/private_dns_vnet_link/azurerm"
+  version = "~> 1.0"
 
   link_name             = local.vnet_link_name
   resource_group_name   = local.resource_group_name
@@ -344,7 +353,8 @@ module "private_dns_zone_link" {
 }
 
 module "private_dns_records" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-private_dns_records.git?ref=1.0.0"
+  source  = "d2lqlh14iel5k2.cloudfront.net/module_primitive/private_dns_records/azurerm"
+  version = "~> 1.0"
 
   a_records = local.a_records
 

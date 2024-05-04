@@ -86,7 +86,7 @@ locals {
 
   role_assignments_owner = {
     for key, value in var.role_assignments_owner : key => merge(value, { scope = module.key_vault.key_vault_id,
-    principal_id = local.object_id }) //"c34daa6a-ac5e-4075-929f-dc1a02306972"
+    principal_id = local.object_id })
   }
 
   network_acls = merge(var.network_acls, {
