@@ -178,8 +178,6 @@ security_rules = [{
     destination_address_prefix = "*"
   }
 ]
-vm_name     = "example-machine-eastus"
-vm_nic_name = "example-nic-eastus"
 role_assignments = {
   "kv_cert_user_umi" = {
     role_definition_name = "Key Vault Certificate User"

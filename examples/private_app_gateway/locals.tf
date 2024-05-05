@@ -21,7 +21,6 @@ locals {
   log_analytics_workspace_name = module.resource_names["log_analytics_workspace"].minimal_random_suffix
   diagnostic_settings_name     = module.resource_names["diagnostic_settings"].minimal_random_suffix
   app_gtwy_subnet_id           = lookup(module.network.vnet_subnets_name_id, "appgw-subnet", null)
-  vm_subnet_id                 = lookup(module.network.vnet_subnets_name_id, "subnet1", null)
   jumpbox_vm_subnet_id         = lookup(module.network.vnet_subnets_name_id, "jumpbox-subnet", null)
 
 
@@ -69,12 +68,6 @@ locals {
     subnet_id                     = local.jumpbox_vm_subnet_id
     private_ip_address_allocation = var.jumpbox_vm_nic_ip_configuration.private_ip_address_allocation
     public_ip_address_id          = module.jumpbox_pip.id
-  }
-
-  vm_nic_ip_configuration = {
-    name                          = var.vm_nic_ip_configuration.name
-    subnet_id                     = local.vm_subnet_id
-    private_ip_address_allocation = var.vm_nic_ip_configuration.private_ip_address_allocation
   }
 
   password = random_string.password.result

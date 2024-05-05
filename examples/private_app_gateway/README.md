@@ -8,18 +8,22 @@ In this example, we deploy an application gateway with a backend pool and HTTP l
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | <= 1.5.5 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 3.77 |
+| <a name="requirement_http"></a> [http](#requirement\_http) | ~> 3.4 |
+| <a name="requirement_local"></a> [local](#requirement\_local) | ~> 2.5 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.2 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.6 |
+| <a name="requirement_tls"></a> [tls](#requirement\_tls) | ~> 4.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.5 |
-| <a name="provider_local"></a> [local](#provider\_local) | 2.5.1 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.6.1 |
 | <a name="provider_null"></a> [null](#provider\_null) | 3.2.2 |
-| <a name="provider_http"></a> [http](#provider\_http) | 3.4.2 |
+| <a name="provider_local"></a> [local](#provider\_local) | 2.5.1 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.102.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.6.1 |
+| <a name="provider_http"></a> [http](#provider\_http) | 3.4.2 |
 
 ## Modules
 
@@ -83,20 +87,12 @@ In this example, we deploy an application gateway with a backend pool and HTTP l
 | <a name="input_subnet_names"></a> [subnet\_names](#input\_subnet\_names) | (Required) The names of the subnets to be created. | `list(string)` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | (Required) Project environment. | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | (Required) Azure location. | `string` | n/a | yes |
-| <a name="input_vm_name"></a> [vm\_name](#input\_vm\_name) | Name of the virtual machine | `string` | `"example-machine"` | no |
 | <a name="input_jumpbox_name"></a> [jumpbox\_name](#input\_jumpbox\_name) | Name of the virtual machine | `string` | `"jumpbox-machine"` | no |
-| <a name="input_vm_nic_name"></a> [vm\_nic\_name](#input\_vm\_nic\_name) | Name of the virtual machine | `string` | `"example-nic"` | no |
 | <a name="input_jumpbox_nic_name"></a> [jumpbox\_nic\_name](#input\_jumpbox\_nic\_name) | Name of the virtual machine | `string` | `"jumpbox-example-nic"` | no |
-| <a name="input_vm_priority"></a> [vm\_priority](#input\_vm\_priority) | Priority of the virtual machine | `string` | `"Regular"` | no |
-| <a name="input_eviction_policy"></a> [eviction\_policy](#input\_eviction\_policy) | Eviction policy of the virtual machine | `string` | `"Deallocate"` | no |
 | <a name="input_vm_size"></a> [vm\_size](#input\_vm\_size) | Size of the virtual machine | `string` | `"Standard_F2"` | no |
 | <a name="input_vm_username"></a> [vm\_username](#input\_vm\_username) | value of the username | `string` | `"adminuser"` | no |
-| <a name="input_custom_data"></a> [custom\_data](#input\_custom\_data) | Custom script path that allows to run commands on the virtual machine at the time of provisioning. | `string` | `"scripts/init.sh"` | no |
-| <a name="input_admin_ssh_key"></a> [admin\_ssh\_key](#input\_admin\_ssh\_key) | SSH key for the virtual machine | <pre>object({<br>    username        = string<br>    public_key_path = string<br>  })</pre> | <pre>{<br>  "public_key_path": "~/.ssh/id_rsa.pub",<br>  "username": "adminuser"<br>}</pre> | no |
 | <a name="input_os_disk"></a> [os\_disk](#input\_os\_disk) | OS disk configuration | <pre>object({<br>    caching              = string<br>    storage_account_type = string<br>  })</pre> | <pre>{<br>  "caching": "ReadWrite",<br>  "storage_account_type": "Standard_LRS"<br>}</pre> | no |
-| <a name="input_source_image_reference"></a> [source\_image\_reference](#input\_source\_image\_reference) | Source image reference | <pre>object({<br>    publisher = string<br>    offer     = string<br>    sku       = string<br>    version   = string<br>  })</pre> | <pre>{<br>  "offer": "0001-com-ubuntu-server-jammy",<br>  "publisher": "Canonical",<br>  "sku": "22_04-lts",<br>  "version": "latest"<br>}</pre> | no |
 | <a name="input_jumpbox_source_image_reference"></a> [jumpbox\_source\_image\_reference](#input\_jumpbox\_source\_image\_reference) | Source image reference | <pre>object({<br>    publisher = string<br>    offer     = string<br>    sku       = string<br>    version   = string<br>  })</pre> | <pre>{<br>  "offer": "WindowsServer",<br>  "publisher": "MicrosoftWindowsServer",<br>  "sku": "2016-Datacenter",<br>  "version": "latest"<br>}</pre> | no |
-| <a name="input_vm_nic_ip_configuration"></a> [vm\_nic\_ip\_configuration](#input\_vm\_nic\_ip\_configuration) | Attributes of the network interface to be created. | <pre>object({<br>    name                          = string<br>    private_ip_address_allocation = string<br>  })</pre> | <pre>{<br>  "name": "internal",<br>  "private_ip_address_allocation": "Dynamic"<br>}</pre> | no |
 | <a name="input_jumpbox_vm_nic_ip_configuration"></a> [jumpbox\_vm\_nic\_ip\_configuration](#input\_jumpbox\_vm\_nic\_ip\_configuration) | Attributes of the network interface to be created. | <pre>object({<br>    name                          = string<br>    private_ip_address_allocation = string<br>    subnet_id                     = optional(string)<br>  })</pre> | <pre>{<br>  "name": "jumpbox-internal",<br>  "private_ip_address_allocation": "Dynamic"<br>}</pre> | no |
 | <a name="input_security_rules"></a> [security\_rules](#input\_security\_rules) | (Optional) A list of security rules associated with the network security group. | <pre>list(object({<br>    name                                       = string<br>    protocol                                   = string<br>    access                                     = string<br>    priority                                   = number<br>    direction                                  = string<br>    description                                = optional(string)<br>    source_port_range                          = optional(string)<br>    source_port_ranges                         = optional(list(string))<br>    destination_port_range                     = optional(string)<br>    destination_port_ranges                    = optional(list(string))<br>    source_address_prefix                      = optional(string)<br>    source_address_prefixes                    = optional(list(string))<br>    source_application_security_group_ids      = optional(list(string))<br>    destination_address_prefix                 = optional(string)<br>    destination_address_prefixes               = optional(list(string))<br>    destination_application_security_group_ids = optional(list(string))<br>  }))</pre> | `null` | no |
 | <a name="input_public_ip_name"></a> [public\_ip\_name](#input\_public\_ip\_name) | Name of the public ip | `string` | `"example-public-ip"` | no |
@@ -110,7 +106,6 @@ In this example, we deploy an application gateway with a backend pool and HTTP l
 | <a name="input_enable_rbac_authorization"></a> [enable\_rbac\_authorization](#input\_enable\_rbac\_authorization) | Enable RBAC authorization for the key vault | `bool` | `false` | no |
 | <a name="input_network_acls"></a> [network\_acls](#input\_network\_acls) | Network ACLs for the key vault | <pre>object({<br>    bypass                     = string<br>    default_action             = string<br>    ip_rules                   = optional(list(string))<br>    virtual_network_subnet_ids = optional(list(string))<br>  })</pre> | <pre>{<br>  "bypass": "AzureServices",<br>  "default_action": "Allow",<br>  "ip_rules": [],<br>  "virtual_network_subnet_ids": []<br>}</pre> | no |
 | <a name="input_public_network_access_enabled"></a> [public\_network\_access\_enabled](#input\_public\_network\_access\_enabled) | (Optional) Whether public network access is allowed for this Key Vault. Defaults to true. | `bool` | `true` | no |
-| <a name="input_certificates"></a> [certificates](#input\_certificates) | List of certificates to be imported. If `filepath` is specified then the pfx files should be present in the root of the module (path.root). If `content` is specified then the content of the certificate should be provided in base 64 encoded format. Only one of them should be provided. | <pre>map(object({<br>    contents = optional(string)<br>    filepath = optional(string)<br>    password = string<br>  }))</pre> | `{}` | no |
 | <a name="input_algorithm"></a> [algorithm](#input\_algorithm) | Name of the algorithm to use when generating the private key. Currently-supported values are: RSA, ECDSA, ED25519. | `string` | `"RSA"` | no |
 | <a name="input_rsa_bits"></a> [rsa\_bits](#input\_rsa\_bits) | Size of the RSA key to create in bits. Defaults to 2048 bits. | `number` | `4096` | no |
 | <a name="input_ca_private_key"></a> [ca\_private\_key](#input\_ca\_private\_key) | Name for the Private key for the CA certificate file. | `string` | `"ca_private_key.pem"` | no |
@@ -125,7 +120,6 @@ In this example, we deploy an application gateway with a backend pool and HTTP l
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to the resources created by the module. | `map(string)` | `{}` | no |
 | <a name="input_zone_name"></a> [zone\_name](#input\_zone\_name) | variables for private dns zone module | `string` | n/a | yes |
 | <a name="input_registration_enabled"></a> [registration\_enabled](#input\_registration\_enabled) | (Optional) Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled? Defaults to false. | `bool` | `false` | no |
-| <a name="input_a_records"></a> [a\_records](#input\_a\_records) | A list of A records to create | <pre>map(object({<br>    name                = string<br>    resource_group_name = string<br>    zone_name           = string<br>    ttl                 = number<br>    records             = list(string)<br>    tags                = optional(map(string))<br>  }))</pre> | `{}` | no |
 | <a name="input_log_analytics_workspace_sku"></a> [log\_analytics\_workspace\_sku](#input\_log\_analytics\_workspace\_sku) | Specifies the SKU of the Log Analytics Workspace. Possible values are Free, PerNode, Premium, Standard, Standalone, Unlimited, CapacityReservation, and PerGB2018 (new SKU as of 2018-04-03). Defaults to PerGB2018. | `string` | `"PerGB2018"` | no |
 | <a name="input_log_analytics_workspace_retention_in_days"></a> [log\_analytics\_workspace\_retention\_in\_days](#input\_log\_analytics\_workspace\_retention\_in\_days) | The retention period for the logs in days. | `number` | `30` | no |
 

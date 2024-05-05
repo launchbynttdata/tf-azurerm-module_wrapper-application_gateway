@@ -291,39 +291,15 @@ variable "location" {
 }
 
 //variables for vm module
-variable "vm_name" {
-  description = "Name of the virtual machine"
-  type        = string
-  default     = "example-machine"
-}
-
 variable "jumpbox_name" {
   description = "Name of the virtual machine"
   type        = string
   default     = "jumpbox-machine"
 }
-variable "vm_nic_name" {
-  description = "Name of the virtual machine"
-  type        = string
-  default     = "example-nic"
-}
-
 variable "jumpbox_nic_name" {
   description = "Name of the virtual machine"
   type        = string
   default     = "jumpbox-example-nic"
-}
-
-variable "vm_priority" {
-  description = "Priority of the virtual machine"
-  type        = string
-  default     = "Regular"
-}
-
-variable "eviction_policy" {
-  description = "Eviction policy of the virtual machine"
-  type        = string
-  default     = "Deallocate"
 }
 
 variable "vm_size" {
@@ -338,24 +314,6 @@ variable "vm_username" {
   default     = "adminuser"
 }
 
-variable "custom_data" {
-  description = "Custom script path that allows to run commands on the virtual machine at the time of provisioning."
-  type        = string
-  default     = "scripts/init.sh"
-}
-
-variable "admin_ssh_key" {
-  description = "SSH key for the virtual machine"
-  type = object({
-    username        = string
-    public_key_path = string
-  })
-  default = {
-    username        = "adminuser"
-    public_key_path = "~/.ssh/id_rsa.pub"
-  }
-}
-
 variable "os_disk" {
   description = "OS disk configuration"
   type = object({
@@ -365,22 +323,6 @@ variable "os_disk" {
   default = {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
-  }
-}
-
-variable "source_image_reference" {
-  description = "Source image reference"
-  type = object({
-    publisher = string
-    offer     = string
-    sku       = string
-    version   = string
-  })
-  default = {
-    publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-jammy"
-    sku       = "22_04-lts"
-    version   = "latest"
   }
 }
 
@@ -399,19 +341,6 @@ variable "jumpbox_source_image_reference" {
     version   = "latest"
   }
 }
-
-variable "vm_nic_ip_configuration" {
-  description = "Attributes of the network interface to be created."
-  type = object({
-    name                          = string
-    private_ip_address_allocation = string
-  })
-  default = {
-    name                          = "internal"
-    private_ip_address_allocation = "Dynamic"
-  }
-}
-
 variable "jumpbox_vm_nic_ip_configuration" {
   description = "Attributes of the network interface to be created."
   type = object({
@@ -532,27 +461,7 @@ variable "public_network_access_enabled" {
   default     = true
 }
 
-# variable "certificates" {
-#   description = "List of certificates to be imported. The pfx files should be present in the root of the module (path.root) and its name denoted as certificate_name"
-#   type = map(object({
-#     certificate_name = string
-#   }))
-
-#   default = {}
-# }
-
 //Variables related to certificate module
-variable "certificates" {
-  description = "List of certificates to be imported. If `filepath` is specified then the pfx files should be present in the root of the module (path.root). If `content` is specified then the content of the certificate should be provided in base 64 encoded format. Only one of them should be provided."
-  type = map(object({
-    contents = optional(string)
-    filepath = optional(string)
-    password = string
-  }))
-
-  default = {}
-}
-
 variable "algorithm" {
   description = "Name of the algorithm to use when generating the private key. Currently-supported values are: RSA, ECDSA, ED25519."
   type        = string
@@ -709,20 +618,6 @@ variable "registration_enabled" {
   description = "(Optional) Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled? Defaults to false."
   type        = bool
   default     = false
-}
-
-//variables for private dns zone record module
-variable "a_records" {
-  description = "A list of A records to create"
-  type = map(object({
-    name                = string
-    resource_group_name = string
-    zone_name           = string
-    ttl                 = number
-    records             = list(string)
-    tags                = optional(map(string))
-  }))
-  default = {}
 }
 
 //variables for log analytics workspace module
