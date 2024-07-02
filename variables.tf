@@ -72,20 +72,6 @@ variable "app_gateways" {
         paths                       = optional(list(string), [])
       }))
     })), []),
-    client_name                = string,
-    environment                = string,
-    location                   = string,
-    location_short             = optional(string, ""),
-    logs_destinations_ids      = list(string),
-    resource_group_name        = string,
-    stack                      = string,
-    subnet_cidr                = string,
-    virtual_network_name       = string,
-    app_gateway_tags           = optional(map(string), {}),
-    custom_appgw_name          = optional(string, ""),
-    create_subnet              = bool,
-    subnet_id                  = optional(string),
-    subnet_resource_group_name = optional(string),
     appgw_rewrite_rule_set = optional(list(object({
       name = string
       rewrite_rules = list(object({
@@ -135,6 +121,36 @@ variable "app_gateways" {
       name = string
       port = number
     })),
+    trusted_root_certificate_configs = optional(list(object({
+      name                = string
+      data                = optional(string)
+      file_path           = optional(string)
+      key_vault_secret_id = optional(string)
+    })), []),
+    ssl_certificates_configs = optional(list(object({
+      name                = string
+      data                = optional(string)
+      password            = optional(string)
+      key_vault_secret_id = optional(string)
+    })), []),
+    autoscaling_parameters = optional(object({
+      min_capacity = number,
+      max_capacity = optional(number, 5) }
+    ), null),
+    user_assigned_identity_id                  = optional(string, null),
+    client_name                                = string,
+    environment                                = string,
+    location                                   = string,
+    location_short                             = optional(string, ""),
+    resource_group_name                        = string,
+    stack                                      = string,
+    subnet_cidr                                = string,
+    virtual_network_name                       = string,
+    app_gateway_tags                           = optional(map(string), {}),
+    custom_appgw_name                          = optional(string, ""),
+    create_subnet                              = bool,
+    subnet_id                                  = optional(string),
+    subnet_resource_group_name                 = optional(string),
     custom_ip_name                             = optional(string, "")
     custom_ip_label                            = optional(string, "")
     custom_frontend_ip_configuration_name      = optional(string, "")
@@ -157,5 +173,14 @@ variable "app_gateways" {
     firewall_policy_id                         = optional(string, null)
     force_firewall_policy_association          = optional(bool, false)
     nsr_https_source_address_prefix            = optional(string, "")
+    logs_destinations_ids                      = list(string) // Resource id of log analytics workspace or storage account
+    logs_categories = optional(list(string), ["ApplicationGatewayAccessLog",
+      "ApplicationGatewayFirewallLog",
+    "ApplicationGatewayPerformanceLog"])
+    logs_metrics_categories         = optional(list(string), ["All"])
+    use_caf_naming                  = optional(bool, false)
+    custom_diagnostic_settings_name = optional(string, "")
+    name_prefix                     = optional(string, "")
+    name_suffix                     = optional(string, "")
   }))
 }

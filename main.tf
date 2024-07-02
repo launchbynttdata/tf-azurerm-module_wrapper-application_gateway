@@ -18,6 +18,9 @@ module "app_gateway" {
   appgw_backend_http_settings                = each.value.appgw_backend_http_settings
   appgw_backend_pools                        = each.value.appgw_backend_pools
   appgw_http_listeners                       = each.value.appgw_http_listeners
+  trusted_root_certificate_configs           = each.value.trusted_root_certificate_configs
+  user_assigned_identity_id                  = each.value.user_assigned_identity_id
+  ssl_certificates_configs                   = each.value.ssl_certificates_configs
   appgw_routings                             = each.value.appgw_routings
   appgw_url_path_map                         = each.value.appgw_url_path_map
   appgw_probes                               = each.value.appgw_probes
@@ -41,7 +44,6 @@ module "app_gateway" {
   frontend_port_settings = each.value.frontend_port_settings
   location               = each.value.location
   location_short         = each.value.location_short
-  logs_destinations_ids  = each.value.logs_destinations_ids
   resource_group_name    = each.value.resource_group_name
   stack                  = each.value.stack
 
@@ -63,5 +65,12 @@ module "app_gateway" {
   enable_http2                      = each.value.enable_http2
   firewall_policy_id                = each.value.firewall_policy_id
   force_firewall_policy_association = each.value.force_firewall_policy_association
+
+  autoscaling_parameters          = each.value.autoscaling_parameters
+  logs_destinations_ids           = each.value.logs_destinations_ids
+  logs_categories                 = each.value.logs_categories
+  logs_metrics_categories         = each.value.logs_metrics_categories
+  use_caf_naming                  = each.value.use_caf_naming
+  custom_diagnostic_settings_name = each.value.custom_diagnostic_settings_name
 
 }

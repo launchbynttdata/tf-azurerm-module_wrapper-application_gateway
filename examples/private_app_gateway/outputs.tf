@@ -176,8 +176,8 @@ output "resource_group_name" {
   description = "Resource group name"
 }
 
-output "jumpbox_password" {
-  value       = local.jumpbox_password
-  description = "Jumpbox password"
-  sensitive   = true
+output "password" {
+  value       = local.password
+  description = "Password used for certificate generation, key vault certificate upload and VMs."
+  sensitive   = false
 }
