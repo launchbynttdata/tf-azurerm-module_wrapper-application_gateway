@@ -13,7 +13,8 @@
 
 # This module generates the resource-name of resources based on resource_type, naming_prefix, env etc.
 module "resource_names" {
-  source = "git::https://github.com/launchbynttdata/tf-launch-module_library-resource_name.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_library/resource_name/launch"
+  version = "~> 1.0"
 
   for_each = var.resource_names_map
 
@@ -28,7 +29,8 @@ module "resource_names" {
 }
 
 module "resource_group" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-resource_group.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/resource_group/azurerm"
+  version = "~> 1.0"
 
   name     = local.resource_group_name
   location = var.location
@@ -55,7 +57,8 @@ module "network" {
 }
 
 module "network_security_group" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-network_security_group.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/network_security_group/azurerm"
+  version = "~> 1.0"
 
   name                = local.network_security_group_name
   location            = var.location
@@ -66,7 +69,8 @@ module "network_security_group" {
 }
 
 module "nsg_subnet_association" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-nsg_subnet_association.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/nsg_subnet_association/azurerm"
+  version = "~> 1.0"
 
   network_security_group_id = module.network_security_group.network_security_group_id
   subnet_id                 = local.app_gtwy_subnet_id
@@ -84,7 +88,8 @@ module "app_gateway" {
 }
 
 module "vm_nic" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-network_interface.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/network_interface/azurerm"
+  version = "~> 1.0"
 
   name                = var.vm_nic_name
   location            = var.location
@@ -124,7 +129,8 @@ resource "azurerm_linux_virtual_machine" "vm_instance" {
 }
 
 module "jumpbox_nic" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-network_interface.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/network_interface/azurerm"
+  version = "~> 1.0"
 
   name                = var.jumpbox_nic_name
   location            = var.location
@@ -133,7 +139,8 @@ module "jumpbox_nic" {
 }
 
 module "jumpbox_pip" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-public_ip.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/public_ip/azurerm"
+  version = "~> 1.0"
 
   name                    = var.public_ip_name
   location                = var.location
@@ -145,7 +152,8 @@ module "jumpbox_pip" {
 }
 
 module "windows_vm_jumpbox" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-windows_virtual_machine.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/windows_virtual_machine/azurerm"
+  version = "~> 1.0"
 
   name                   = var.jumpbox_name
   resource_group_name    = local.resource_group_name

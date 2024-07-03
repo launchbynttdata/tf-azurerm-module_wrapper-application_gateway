@@ -14,23 +14,23 @@ In this example, we deploy an application gateway with a backend pool and HTTP l
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.99.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.6.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.110.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.6.2 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_resource_names"></a> [resource\_names](#module\_resource\_names) | git::https://github.com/launchbynttdata/tf-launch-module_library-resource_name.git | 1.0.0 |
-| <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-resource_group.git | 1.0.0 |
+| <a name="module_resource_names"></a> [resource\_names](#module\_resource\_names) | terraform.registry.launch.nttdata.com/module_library/resource_name/launch | ~> 1.0 |
+| <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | terraform.registry.launch.nttdata.com/module_primitive/resource_group/azurerm | ~> 1.0 |
 | <a name="module_network"></a> [network](#module\_network) | Azure/vnet/azurerm | 4.1.0 |
-| <a name="module_network_security_group"></a> [network\_security\_group](#module\_network\_security\_group) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-network_security_group.git | 1.0.0 |
-| <a name="module_nsg_subnet_association"></a> [nsg\_subnet\_association](#module\_nsg\_subnet\_association) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-nsg_subnet_association.git | 1.0.0 |
+| <a name="module_network_security_group"></a> [network\_security\_group](#module\_network\_security\_group) | terraform.registry.launch.nttdata.com/module_primitive/network_security_group/azurerm | ~> 1.0 |
+| <a name="module_nsg_subnet_association"></a> [nsg\_subnet\_association](#module\_nsg\_subnet\_association) | terraform.registry.launch.nttdata.com/module_primitive/nsg_subnet_association/azurerm | ~> 1.0 |
 | <a name="module_app_gateway"></a> [app\_gateway](#module\_app\_gateway) | ../.. | n/a |
-| <a name="module_vm_nic"></a> [vm\_nic](#module\_vm\_nic) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-network_interface.git | 1.0.0 |
-| <a name="module_jumpbox_nic"></a> [jumpbox\_nic](#module\_jumpbox\_nic) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-network_interface.git | 1.0.0 |
-| <a name="module_jumpbox_pip"></a> [jumpbox\_pip](#module\_jumpbox\_pip) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-public_ip.git | 1.0.0 |
-| <a name="module_windows_vm_jumpbox"></a> [windows\_vm\_jumpbox](#module\_windows\_vm\_jumpbox) | git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-windows_virtual_machine.git | 1.0.0 |
+| <a name="module_vm_nic"></a> [vm\_nic](#module\_vm\_nic) | terraform.registry.launch.nttdata.com/module_primitive/network_interface/azurerm | ~> 1.0 |
+| <a name="module_jumpbox_nic"></a> [jumpbox\_nic](#module\_jumpbox\_nic) | terraform.registry.launch.nttdata.com/module_primitive/network_interface/azurerm | ~> 1.0 |
+| <a name="module_jumpbox_pip"></a> [jumpbox\_pip](#module\_jumpbox\_pip) | terraform.registry.launch.nttdata.com/module_primitive/public_ip/azurerm | ~> 1.0 |
+| <a name="module_windows_vm_jumpbox"></a> [windows\_vm\_jumpbox](#module\_windows\_vm\_jumpbox) | terraform.registry.launch.nttdata.com/module_primitive/windows_virtual_machine/azurerm | ~> 1.0 |
 
 ## Resources
 
